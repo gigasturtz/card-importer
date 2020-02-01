@@ -1,13 +1,12 @@
 
 require('dotenv').config()
 const models = require('./models')
-const { connectDB } = require('./models')
 const fs = require('fs')
 const rawData = fs.readFileSync('cardData.json')
-const eraseDatabaseOnSync = true
+const eraseDatabaseOnSync = false
 const cards = JSON.parse(rawData)
 
-connectDB().then(async () => {
+models.connectDB().then(async () => {
     if (eraseDatabaseOnSync) {
 
         await Promise.all([
