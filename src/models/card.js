@@ -8,9 +8,15 @@ const cardSchema = new mongoose.Schema({
 })
 
 cardSchema.statics.findByName = async function (cardToFind){
-    let card = await this.findOne({ 
-        'card.name': { '$regex': cardToFind, '$options': 'i' }  
-    })
+    var query = {}
+    var queryParam = 'card.name'
+    query[queryParam] = cardToFind
+    var card = await this.findOne(query)
+    if (!card) {
+        card = await this.findOne({ 
+            'card.name': { '$regex': cardToFind, '$options': 'i' }  
+        })
+    }
     return card
 }
 
