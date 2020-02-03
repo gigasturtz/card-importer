@@ -13,11 +13,14 @@ cardSchema.statics.findByName = async function (cardToFind){
     query[queryParam] = cardToFind
     var card = await this.findOne(query)
     if (!card) {
+        console.log("using regex")
         card = await this.findOne({ 
             'card.name': { '$regex': cardToFind, '$options': 'i' }  
         })
     }
+    if (card){
     return card
+    }
 }
 
 const Card = mongoose.model('Card', cardSchema)

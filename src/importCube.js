@@ -10,7 +10,7 @@ models.connectDB().then(async () => {
             models.Cube.deleteMany({}),
             models.User.deleteMany({})
         ])
-        await importCube().then(console.log('Done Importing'))
+        await importCube()
     }
 })
 
@@ -19,7 +19,12 @@ const importCube = async () => {
     me.save()
     const importedCube = new models.Cube({owner: me, cards: []}) 
     for (var card in rawData) {
-        importedCube.cards.push(await models.Card.findByName(rawData[card]))
+        var foundCard = await models.Card.findByName(rawData[card])
+        if(foundCard){
+             importedCube.cards.push(foundCard)
+             console.log("Added ", rawData[card])
+        }
+        else console.log("Couldn't find ", rawData[card])
     }
     console.log('done finding cards')
    
